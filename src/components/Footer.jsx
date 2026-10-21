@@ -24,7 +24,7 @@ export default function Footer() {
             </p>
             <div className="footer-status-pill">
               <span className="status-dot"></span>
-              <span>{projectConfig.status.state} (100% Completed)</span>
+              <span>{projectConfig.status.state}</span>
             </div>
           </div>
 
@@ -59,7 +59,7 @@ export default function Footer() {
                 <Link to="/documentation">Documentation</Link>
               </li>
               <li>
-                <Link to="/progress">Project Progress (Planned)</Link>
+                <Link to="/progress">Project Progress</Link>
               </li>
               <li>
                 <a

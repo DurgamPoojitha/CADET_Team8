@@ -4,15 +4,14 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Overview from './pages/Overview';
 import Documentation from './pages/Documentation';
-import UnimplementedNotice from './components/UnimplementedNotice';
+import Progress from './pages/Progress';
 
 /**
  * Application shell for the CADET documentation portal.
  * HashRouter is used to protect routes on GitHub Pages.
  * Page 1 renders the project overview.
  * Page 2 renders the technical documentation.
- * Page 3 renders a placeholder notice for progress.
- * UnimplementedNotice covers routes pending implementation.
+ * Page 3 renders project progress and team responsibilities.
  */
 export default function App() {
   return (
@@ -28,16 +27,8 @@ export default function App() {
             {/* Page 2: Technical documentation (implemented). */}
             <Route path="/documentation" element={<Documentation />} />
 
-            {/* Page 3 renders a placeholder notice for progress. */}
-            <Route
-              path="/progress"
-              element={
-                <UnimplementedNotice
-                  title="Project Progress & Roadmap"
-                  pageName="Progress"
-                />
-              }
-            />
+            {/* Page 3: Project progress and team responsibilities. */}
+            <Route path="/progress" element={<Progress />} />
 
             {/* Catch-all redirect to Overview */}
             <Route path="*" element={<Navigate to="/" replace />} />
