@@ -3,21 +3,16 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Overview from './pages/Overview';
+import Documentation from './pages/Documentation';
 import UnimplementedNotice from './components/UnimplementedNotice';
 
 /**
- * App Component - CADET Documentation Portal
- * 
- * Routing Architecture:
- * - HashRouter is utilized to ensure 100% compatibility with GitHub Pages static hosting,
- *   preventing 404 Not Found errors on page refresh without requiring complex server-side redirects.
- * 
- * Page Implementation Scope:
- * - Page 1 (Overview): Fully implemented and styled in src/pages/Overview.jsx
- * - Page 2 (Documentation): Kept strictly as an empty placeholder file in src/pages/Documentation.jsx
- * - Page 3 (Progress): Kept strictly as an empty placeholder file in src/pages/Progress.jsx
- * - UnimplementedNotice provides a safe, route-compatible placeholder so the app compiles
- *   and executes without modifying the empty files.
+ * Application shell for the CADET documentation portal.
+ * HashRouter is used to protect routes on GitHub Pages.
+ * Page 1 renders the project overview.
+ * Page 2 renders the technical documentation.
+ * Page 3 renders a placeholder notice for progress.
+ * UnimplementedNotice covers routes pending implementation.
  */
 export default function App() {
   return (
@@ -30,18 +25,10 @@ export default function App() {
             <Route path="/" element={<Overview />} />
             <Route path="/overview" element={<Navigate to="/" replace />} />
 
-            {/* Page 2: Documentation (Empty Placeholder preserved) */}
-            <Route
-              path="/documentation"
-              element={
-                <UnimplementedNotice
-                  title="Technical Documentation"
-                  pageName="Documentation"
-                />
-              }
-            />
+            {/* Page 2: Technical documentation (implemented). */}
+            <Route path="/documentation" element={<Documentation />} />
 
-            {/* Page 3: Project Progress (Empty Placeholder preserved) */}
+            {/* Page 3 renders a placeholder notice for progress. */}
             <Route
               path="/progress"
               element={

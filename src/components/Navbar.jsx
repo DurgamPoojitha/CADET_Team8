@@ -49,7 +49,6 @@ export default function Navbar() {
             }
           >
             Documentation
-            <span className="nav-tag">Planned</span>
           </NavLink>
           <NavLink
             to="/progress"
@@ -111,7 +110,6 @@ export default function Navbar() {
               onClick={closeMobileMenu}
             >
               Documentation
-              <span className="nav-tag">Planned</span>
             </NavLink>
             <NavLink
               to="/progress"

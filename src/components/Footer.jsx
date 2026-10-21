@@ -56,7 +56,7 @@ export default function Footer() {
                 <Link to="/">Project Overview</Link>
               </li>
               <li>
-                <Link to="/documentation">Documentation (Planned)</Link>
+                <Link to="/documentation">Documentation</Link>
               </li>
               <li>
                 <Link to="/progress">Project Progress (Planned)</Link>
