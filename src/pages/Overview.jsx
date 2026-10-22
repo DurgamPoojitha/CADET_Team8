@@ -135,18 +135,7 @@ export default function Overview() {
               <span>GitHub Repository</span>
               <ExternalLink size={13} className="ov-btn-ext" />
             </a>
-            <a
-              href={projectConfig.urls.liveDemo}
-              target={projectConfig.urls.isLiveDemoPlaceholder ? '_self' : '_blank'}
-              rel="noopener noreferrer"
-              className="ov-btn ov-btn-ghost"
-            >
-              <ExternalLink size={16} />
-              <span>Live Demo</span>
-              {projectConfig.urls.isLiveDemoPlaceholder && (
-                <span className="ov-placeholder-tag">Placeholder</span>
-              )}
-            </a>
+            
           </div>
 
         </div>
