@@ -103,7 +103,7 @@ The datasets may have different folder structures, file formats, and train/test 
 
 ## 5. Repository Structure
 
-The repository is organised around the image detector, video detector, cross-dataset video experiments, and final project materials.
+The repository is organised into folders for image detection, video detection, cross-dataset evaluation, and final project materials.
 
 ```text
 CADET_Team8/
@@ -114,17 +114,21 @@ CADET_Team8/
 ├── art_videofolder/
 │   └── Video detector ART training notebooks
 │
+├── cross_data_image/
+│   └── Cross-dataset image evaluation notebooks
+│
 ├── cross_data_video/
 │   └── Cross-dataset video evaluation notebooks
 │
 ├── final_folder/
-│   └── Final project notebooks and related materials
+│   └── Final project notebooks
 │
+├── .gitignore
 ├── README.MD
-└── .gitignore
+└── datasetlinks.md
 ```
 
-The descriptions above indicate each folder's intended role. Notebook filenames and any additional files may vary as the project develops.
+The folder descriptions indicate their intended roles. Refer to the notebooks inside each folder for the actual implementation, experiment settings, and outputs.
 
 ## 6. Running the Notebooks on Kaggle
 
