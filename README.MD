@@ -72,17 +72,34 @@ This helps assess whether the detectors can generalise to data that differs from
 
 ## 4. Datasets
 
-The project uses separate datasets for image and video detection.
+CADET uses publicly available datasets from Kaggle for training and evaluating its image and video deepfake detectors. Different datasets are used to train the models and test how well they perform on media they have not encountered during training.
 
-| Dataset | Purpose |
-|---|---|
-| 140K Real & Fake Faces | Initial image detection training and validation |
-| Celeb-DF | Evaluation of image and video detection on additional deepfake data |
-| FaceForensics++ | Image frames and videos containing different manipulation methods |
-| Celeb-DF v2 | Cross-dataset evaluation for video detection |
-| UADFV | Additional cross-dataset video evaluation |
+### Image Detection Datasets
 
-The precise datasets and splits used depend on the corresponding notebook and experiment. Please refer to each notebook for its actual configuration.
+| Dataset | Usage | Link |
+|---|---|---|
+| 140K Real & Fake Faces | Training and validation of the image detector | [Kaggle dataset](https://www.kaggle.com/datasets/xhlulu/140k-real-and-fake-faces) |
+| Celeb-DF v2 Image Dataset | Image-based evaluation on additional data | [Kaggle dataset](https://www.kaggle.com/datasets/pranabr0y/celebdf-v2image-dataset) |
+| FaceForensics++ C23 Extracted Faces 100K | Extracted facial images for image experiments | [Kaggle dataset](https://www.kaggle.com/datasets/gradientvoyager/faceforensics-c23-extracted-faces-100k) |
+
+### Video Detection Datasets
+
+| Dataset | Usage | Link |
+|---|---|---|
+| FaceForensics++ C23 | Training and evaluation of the video detector | [Kaggle dataset](https://www.kaggle.com/datasets/xdxd003/ff-c23) |
+| Celeb-DF v2 | Cross-dataset evaluation | [Kaggle dataset](https://www.kaggle.com/datasets/reubensuju/celeb-df-v2) |
+| UADFV | Additional cross-dataset evaluation | [Kaggle dataset](https://www.kaggle.com/datasets/adityakeshri9234/uadfv-dataset) |
+
+### Using the Datasets
+
+1. Open the relevant Kaggle dataset link and sign in to your Kaggle account.
+2. Download the dataset or attach it directly to your Kaggle Notebook using **Add Input**.
+3. Check the dataset's folder structure and update the paths in the notebook if necessary.
+4. Run the notebook using the appropriate dataset and model configuration.
+
+The datasets may have different folder structures, file formats, and train/test splits. Follow the preprocessing and data-loading steps provided in each notebook.
+
+**Note:** Dataset access may require accepting the provider's terms. The datasets are not stored directly in this GitHub repository because of their size. Please refer to the original dataset pages for their access conditions and usage restrictions.
 
 ## 5. Repository Structure
 
@@ -153,7 +170,7 @@ After execution, inspect the evaluation metrics, classification results, and any
 
 The project also examines cross-dataset generalisation and the quality of Grad-CAM explanations.
 
-## 8. Team 08
+## 7. Team 08
 
 **Institution:** Amrita Vishwa Vidyapeetham  
 **Department:** Computer Science and Engineering  
@@ -168,16 +185,16 @@ The project also examines cross-dataset generalisation and the quality of Grad-C
 | Akshay Krishna P S | Implemented the video detector; worked on cross-dataset evaluation and research paper writing |
 | Kalyani H Karuveil | Implemented the video detector; worked on ART in the video detector |
 
-## 9. Project Status
+## 8. Project Status
 
 The Phase 2 implementation covers the image and video detection pipelines, compression-aware preprocessing, adversarial robustness training, cross-dataset evaluation, and Grad-CAM explainability.
 
 Further experiments and performance improvements may continue as part of subsequent project phases. The latest results and implementation details should be taken from the corresponding notebooks and project documentation.
 
-## 10. Project Links
+## 9. Project Links
 
 - **GitHub Repository:** https://github.com/DurgamPoojitha/CADET_Team8
-- **Documentation Portal:** See the project's GitHub Pages documentation portal for the overview, architecture, methodology, model specifications, and project progress.
+- **Documentation Portal:** https://durgampoojitha.github.io/CADET_Team8/
 
 ---
 
