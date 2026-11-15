@@ -21,27 +21,38 @@ const ARCH_DIAGRAM = {
 
 /* Image detector figures come from updated Phase 2 evaluation records. */
 const IMAGE_SPEC = [
+  { label: 'Classification Task', value: 'Image-level binary classification' },
   { label: 'Backbone', value: 'Pretrained XceptionNet with custom FC head, 299 x 299 input' },
   { label: 'Optimisation', value: 'AdamW, discriminative learning rates (backbone 1e-5, head 1e-3)' },
+  { label: 'Feature Representation', value: '2048-dimensional feature representation' },
+  { label: 'Temporal Model', value: 'Not applicable' },
+  { label: 'Input Dimensions', value: '299x299x3' },
   { label: 'Combined Dataset', value: '140K Real & Fake Faces, Celeb-DF frames and FaceForensics++ frames' },
   { label: 'Compression pipeline', value: 'Blur and JPEG re-encode applied to 70% of training images' },
-  { label: 'Clean-trained accuracy', value: '92.68%' },
-  { label: 'Clean-trained F1-score', value: '92.74%' },
-  { label: 'FGSM-trained accuracy', value: '44.33%' },
-  { label: 'FGSM-trained F1-Score', value: '31.03%' }
+  { label: 'Adversarial Training Method', value: 'Custom PyTorch FGSM-based adversarial training' },
+  { label: 'Training Perturbation Budget', value: 'As configured in the image adversarial training schedule' },
+  { label: 'Evaluation Perturbation Budgets', value: '1/255, 2/255, 4/255, 8/255' },
+  { label: 'Evaluation Conditions', value: 'Clean-trained and adversarially trained models evaluated on clean and FGSM-perturbed images' },
+  { label: 'Training Seeds', value: '42 (single seed)' },
+  { label: 'Explainability', value: 'Grad-CAM' }
 ];
 
 /* Video detector figures come from executed notebook runs. */
 const VIDEO_SPEC = [
+  { label: 'Classification Task', value: 'Video-level binary classification' },
   { label: 'Backbone', value: 'Pretrained EfficientNet-B1, 1280-dimensional spatial features' },
-  { label: 'Optimisation', value: 'AdamW, with weight decay configured as 1e-3' },
   { label: 'Temporal model', value: '2-layer unidirectional Long Short-Term Memory (LSTM), 512 hidden units' },
+  { label: 'Feature Representation', value: 'Frame-level spatial features followed by temporal modeling' },
+  { label: 'Optimisation', value: 'AdamW, with weight decay configured as 1e-3' },
+  { label: 'Input Dimensions', value: '16x224x224x3' },
   { label: 'Combined Dataset', value: 'FaceForensics++ C23, Celeb-DF, UADFV' },
   { label: 'Compression pipeline', value: 'Blur and JPEG re-encode applied to 70% of training images' },
-  { label: 'Clean-trained accuracy', value: '87.17%' },
-  { label: 'Clean-trained F1-Score', value: '87.15%' },
-  { label: 'FGSM-trained accuracy', value: '86.42%' },
-  { label: 'FGSM-trained F1-Score', value: '86.40%' },
+  { label: 'Adversarial Training Method', value: 'Custom PyTorch FGSM-based adversarial training' },
+  { label: 'Training Perturbation Budget', value: 'As configured in the video adversarial training schedule' },
+  { label: 'Evaluation Perturbation Budgets', value: '0.25/255, 0.5/255, 1/255, 1.5/255, 2/255, 4/255, 8/255, 12/255, 16/255' },
+  { label: 'Evaluation Conditions', value: 'Clean-trained and adversarially trained models evaluated on clean and FGSM-perturbed videos' },
+  { label: 'Training Seeds', value: '42, 1, 2 (three independent training seeds)' },
+  { label: 'Explainability', value: 'Deletion-based faithfulness analysis in the separate video generalization experiment' },
 ];
 
 /* Corpora are grouped by the detector branch that employs them. */
