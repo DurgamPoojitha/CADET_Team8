@@ -309,14 +309,5 @@ def render():
 
     st.markdown('<hr style="margin:.8rem 0 1.2rem">', unsafe_allow_html=True)
 
-    # ── 7. Limitations Block (Mandatory) ─────────────────────────────────────
-    st.markdown("### Limitations")
-    st.markdown("""
-- **Datasets:** Trained on FaceForensics++ C23, Celeb-DF, and UADFV with an identity-disjoint split.
-- **Generative scope:** May not generalise to unseen generators (such as diffusion-model face swaps or architectures released after 2023).
-- **Adversarial scope:** FGSM-only adversarial training. No PGD, BIM, Carlini-Wagner, or iterative attacks were evaluated; there is **no claim of general adversarial robustness**.
-- **Compression:** Social-media-style JPEG compression and optional Gaussian blur during training. Performance on other codec families (AV1, VP9, HEVC) was not evaluated.
-""")
-
 
 render()
