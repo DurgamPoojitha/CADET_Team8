@@ -21,3 +21,12 @@ TEAM = [
 ]
 
 DISCLAIMER = ""
+
+# ── Results directories ───────────────────────────────────────────────────────
+# Video model results (existing)
+VIDEO_RESULTS_DIR = "models/results"
+
+# Image model results (populated by teammate when image module is ready)
+# When this directory exists and contains files, the Image tabs on Method
+# and Results pages switch from the coming-soon panel to real content.
+IMAGE_RESULTS_DIR = "models_image/results"

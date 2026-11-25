@@ -237,7 +237,61 @@ The Analyse page will automatically detect and use `image_inference.py` when an 
 
 ---
 
-## 10. Architecture overview
+## 10. Filling in the Image tab (teammate guide)
+
+The Method and Results pages each have a **Video** tab (fully working) and an
+**Image** tab (coming-soon panel). Here is exactly what to do to replace the
+placeholder with real content.
+
+### Step 1 — Put result files in the right place
+
+```
+cadet_ar/
+└── models_image/
+    └── results/           ← create this directory
+        ├── *.csv / *.json ← your image-model metric files
+        └── figures/       ← your PNG figures
+```
+
+As soon as `models_image/results/` exists and contains at least one file,
+the coming-soon panel disappears automatically on the next app start.
+
+### Step 2 — Edit the two component files
+
+| File | What to edit |
+|---|---|
+| `components/image_method.py` | Replace the `render()` body with your image pipeline description, using the same `st.markdown` / `st.columns` calls as `components/video_method.py`. |
+| `components/image_results.py` | Replace the `render()` body with real tables, charts and figures, following the same patterns as `components/video_results.py`. Read all numbers from files in `models_image/results/` — do not hardcode. |
+
+Both files have a `_results_available()` guard at the top. Leave that guard in
+place so the coming-soon panel is shown automatically on machines that do not
+have the result files yet.
+
+### Step 3 — Implement analyze_image()
+
+`image_inference.py` (already in the repo) must expose:
+
+```python
+def analyze_image(path: str, model: str = "fgsm") -> dict:
+```
+
+The return dict **must use the same schema** as `analyze_video()`:
+
+```
+verdict, probability, raw_logit, threshold, T,
+stages, evidence, explain, stress, model
+```
+
+The Analyse page will call `analyze_image()` automatically when a `.jpg` /
+`.jpeg` / `.png` file is uploaded.
+
+> [!IMPORTANT]
+> Never invent numbers or model names in the Image tab. Everything shown must
+> come from real evaluation files in `models_image/results/`.
+
+---
+
+## 11. Architecture overview
 
 | Component | Detail |
 |---|---|
