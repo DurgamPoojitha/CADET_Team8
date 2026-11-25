@@ -1,0 +1,6 @@
+[
+  {"file": "0000.mp4", "label": "real", "source_group": "FaceForensics++"},
+  {"file": "0013.mp4", "label": "real", "source_group": "FaceForensics++"},
+  {"file": "0000_fake.mp4", "label": "fake", "source_group": "FaceForensics++"},
+  {"file": "0013_fake.mp4", "label": "fake", "source_group": "FaceForensics++"}
+]
