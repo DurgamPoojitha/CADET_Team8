@@ -1,0 +1,468 @@
+/* ============================================================
+   CADET-AR · assets/styles.css
+   Forensic case-file aesthetic: warm paper, near-black ink,
+   signal-orange accent, editorial layout.
+   ============================================================ */
+
+/* ---- CSS Variables ---- */
+:root {
+  --bg:           #F5F0E8;
+  --bg-alt:       #EDE8DF;
+  --ink:          #1A1612;
+  --ink-muted:    #5C534A;
+  --rule:         #C8BFB0;
+  --accent:       #C45A00;        /* signal orange — manipulated */
+  --authentic:    #3D6B4F;        /* muted green — authentic */
+  --inconclusive: #6B6057;        /* mid-grey — inconclusive */
+  --mono:         "IBM Plex Mono", "Courier New", monospace;
+  --sans:         "IBM Plex Sans", system-ui, sans-serif;
+  --serif:        "Newsreader", "Georgia", serif;
+  --radius:       2px;
+}
+
+/* ---- Web fonts (self-hosted fallback + Google Fonts) ---- */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=Newsreader:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+/* ---- Reset Streamlit chrome ---- */
+#MainMenu, footer, header { visibility: hidden; }
+.stDeployButton { display: none !important; }
+div[data-testid="stToolbar"] { display: none; }
+
+/* Remove stock top padding */
+.block-container {
+  padding-top: 1.5rem !important;
+  padding-bottom: 3rem !important;
+  max-width: 900px !important;
+}
+
+/* Page background */
+.stApp {
+  background-color: var(--bg) !important;
+  font-family: var(--sans);
+  color: var(--ink);
+}
+
+/* ---- Global type ---- */
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+h1 { font-size: 2rem; border-bottom: 1px solid var(--rule); padding-bottom: .4rem; margin-bottom: .2rem; }
+h2 { font-size: 1.35rem; }
+h3 { font-size: 1.1rem; }
+
+p, li { font-family: var(--sans); font-size: .95rem; line-height: 1.65; color: var(--ink); }
+code, pre { font-family: var(--mono); font-size: .82rem; color: var(--ink); background: var(--bg-alt); padding: .1rem .3rem; border-radius: 2px; }
+
+/* ---- Wordmark header ---- */
+.cadet-wordmark {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height: 1;
+}
+.cadet-wordmark-rule {
+  height: 1px;
+  background: var(--ink);
+  width: 100%;
+  margin: .2rem 0 .4rem;
+}
+.cadet-subhead {
+  font-family: var(--sans);
+  font-size: .78rem;
+  font-weight: 400;
+  color: var(--ink-muted);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.cadet-team-line {
+  font-family: var(--mono);
+  font-size: .72rem;
+  color: var(--ink-muted);
+  letter-spacing: .03em;
+}
+
+/* ---- Page navigation ---- */
+.stTabs [data-baseweb="tab-list"] {
+  border-bottom: 1px solid var(--rule);
+  gap: 0;
+  background: transparent;
+}
+.stTabs [data-baseweb="tab"] {
+  font-family: var(--sans);
+  font-size: .82rem;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding: .5rem 1.1rem;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+}
+.stTabs [aria-selected="true"] {
+  color: var(--ink);
+  border-bottom: 2px solid var(--ink);
+  background: transparent;
+}
+.stTabs [data-baseweb="tab-panel"] {
+  padding-top: 1.2rem;
+}
+
+/* ---- Navigation pages ---- */
+div[data-testid="stSidebarNav"] { display: none; }
+
+/* ---- Buttons ---- */
+.stButton > button {
+  font-family: var(--sans);
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  padding: .45rem 1.2rem;
+  transition: background .15s, color .15s;
+}
+.stButton > button:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+.stButton > button[kind="primary"] {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.stButton > button[kind="primary"]:hover {
+  background: #A04800;
+  border-color: #A04800;
+}
+
+/* ---- File uploader ---- */
+[data-testid="stFileUploader"] {
+  border: 1px dashed var(--rule);
+  border-radius: var(--radius);
+  padding: 1rem;
+  background: var(--bg-alt);
+}
+
+/* ---- Select / radio ---- */
+div[data-baseweb="select"] {
+  font-family: var(--sans);
+  font-size: .88rem;
+}
+.stRadio > div {
+  font-family: var(--sans);
+  font-size: .88rem;
+}
+.stRadio label { cursor: pointer; }
+
+/* ---- Metrics ---- */
+[data-testid="stMetric"] {
+  background: var(--bg-alt);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: .6rem .9rem;
+}
+[data-testid="stMetricLabel"] {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+[data-testid="stMetricValue"] {
+  font-family: var(--mono);
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* ---- Tables ---- */
+table {
+  font-family: var(--sans);
+  font-size: .85rem;
+  border-collapse: collapse;
+  width: 100%;
+}
+thead th {
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  border-bottom: 1px solid var(--ink);
+  padding: .4rem .6rem;
+  text-align: left;
+}
+tbody tr { border-bottom: 1px solid var(--rule); }
+tbody tr:last-child { border-bottom: none; }
+tbody td { padding: .4rem .6rem; }
+
+/* ---- st.status box ---- */
+[data-testid="stStatusContainer"] {
+  font-family: var(--mono);
+  font-size: .82rem;
+  background: var(--bg-alt);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+/* ---- st.expander ---- */
+.streamlit-expanderHeader {
+  font-family: var(--sans);
+  font-size: .85rem;
+  font-weight: 600;
+  letter-spacing: .03em;
+  color: var(--ink);
+  background: var(--bg-alt);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+/* ---- Verdict banners ---- */
+.verdict-manipulated {
+  background: #FDF0E8;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1rem 1.4rem;
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: .01em;
+  text-transform: uppercase;
+}
+.verdict-authentic {
+  background: #EAF2EC;
+  border: 2px solid var(--authentic);
+  border-radius: var(--radius);
+  padding: 1rem 1.4rem;
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--authentic);
+  letter-spacing: .01em;
+  text-transform: uppercase;
+}
+.verdict-inconclusive {
+  background: var(--bg-alt);
+  border: 2px solid var(--inconclusive);
+  border-radius: var(--radius);
+  padding: 1rem 1.4rem;
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--inconclusive);
+  letter-spacing: .01em;
+  text-transform: uppercase;
+}
+.verdict-sub {
+  font-family: var(--mono);
+  font-size: .78rem;
+  color: var(--ink-muted);
+  margin-top: .3rem;
+  letter-spacing: .04em;
+}
+
+/* ---- Probability gauge ---- */
+.gauge-wrap {
+  font-family: var(--mono);
+  font-size: .78rem;
+  color: var(--ink-muted);
+  margin: .6rem 0;
+}
+.gauge-bar-bg {
+  width: 100%;
+  height: 10px;
+  background: var(--bg-alt);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  position: relative;
+  margin: .3rem 0;
+  overflow: visible;
+}
+.gauge-bar-fill { height: 100%; border-radius: 1px; }
+.gauge-marker {
+  position: absolute;
+  top: -4px;
+  width: 2px;
+  height: 18px;
+  background: var(--ink);
+}
+
+/* ---- Case-ID badge ---- */
+.case-id {
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .1em;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  background: var(--bg-alt);
+  border: 1px solid var(--rule);
+  display: inline-block;
+  padding: .15rem .5rem;
+  border-radius: var(--radius);
+}
+
+/* ---- Small-caps labels ---- */
+.label-sc {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+/* ---- Frame sheet captions ---- */
+.frame-num {
+  font-family: var(--mono);
+  font-size: .64rem;
+  color: var(--ink-muted);
+  text-align: center;
+  margin-top: .2rem;
+  letter-spacing: .06em;
+}
+
+/* ---- Section numbered headers ---- */
+.step-num {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: -.2rem;
+}
+
+/* ---- Stress test panel ---- */
+.stress-warning {
+  font-family: var(--mono);
+  font-size: .72rem;
+  color: var(--ink-muted);
+  border-left: 2px solid var(--rule);
+  padding-left: .7rem;
+  margin: .6rem 0;
+  letter-spacing: .02em;
+}
+
+/* ---- Tensor shape readout ---- */
+.tensor-shape {
+  font-family: var(--mono);
+  font-size: .78rem;
+  color: var(--ink-muted);
+  background: var(--bg-alt);
+  border: 1px solid var(--rule);
+  padding: .4rem .8rem;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+.tensor-shape .arrow { color: var(--ink-muted); }
+.tensor-shape .shape { color: var(--ink); font-weight: 500; }
+
+/* ---- Disclaimer footer ---- */
+.cadet-footer {
+  font-family: var(--mono);
+  font-size: .68rem;
+  color: var(--ink-muted);
+  border-top: 1px solid var(--rule);
+  padding-top: .6rem;
+  margin-top: 2rem;
+  letter-spacing: .05em;
+}
+
+/* ---- Divider rule ---- */
+hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 1.2rem 0;
+}
+
+/* ---- MET / NOT MET chips ---- */
+.chip-met {
+  font-family: var(--mono);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .07em;
+  background: #EAF2EC;
+  color: var(--authentic);
+  border: 1px solid var(--authentic);
+  border-radius: 2px;
+  padding: .05rem .4rem;
+  text-transform: uppercase;
+}
+.chip-not-met {
+  font-family: var(--mono);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .07em;
+  background: #FDF0E8;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  padding: .05rem .4rem;
+  text-transform: uppercase;
+}
+
+/* ---- Pipeline diagram ---- */
+.pipeline-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  padding: .8rem 0;
+}
+.pipeline-block {
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .04em;
+  background: var(--bg-alt);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: .5rem .7rem;
+  text-align: center;
+  min-width: 80px;
+  line-height: 1.4;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.pipeline-block.accent {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.pipeline-arrow {
+  font-family: var(--mono);
+  font-size: .9rem;
+  color: var(--rule);
+  padding: 0 .2rem;
+  flex-shrink: 0;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 600px) {
+  .block-container { padding-left: 1rem !important; padding-right: 1rem !important; }
+  .cadet-wordmark { font-size: 1.4rem; }
+  h1 { font-size: 1.5rem; }
+}
+
+/* ---- Streamlit image captions ---- */
+[data-testid="stImage"] > div { font-family: var(--mono); font-size: .68rem; color: var(--ink-muted); }
+
+/* ---- Input widgets label ---- */
+.stSelectbox label, .stRadio > label, .stCheckbox > label {
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
