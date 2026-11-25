@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+kaggle_env/
+
+# Model checkpoints (too large for git)
+models/*.pth
+
+# Generated sample cache (images, re-run make_samples.py to regenerate)
+samples/cache/
+
+# Logs
+error.log
+*.log
+
+# macOS
+.DS_Store
+
+# Streamlit cache
+.streamlit/secrets.toml
