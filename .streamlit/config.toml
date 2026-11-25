@@ -1,0 +1,18 @@
+[theme]
+base = "light"
+backgroundColor = "#F5F0E8"
+secondaryBackgroundColor = "#EDE8DF"
+textColor = "#1A1612"
+primaryColor = "#C45A00"
+font = "serif"
+
+[client]
+toolbarMode = "minimal"
+showErrorDetails = false
+
+[server]
+maxUploadSize = 50
+enableStaticServing = true
+
+[browser]
+gatherUsageStats = false
