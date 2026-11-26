@@ -44,26 +44,36 @@ Team 8 · Amrita School of Engineering, Department of CSE
 
 ## 2. Project layout
 
+> [!IMPORTANT]
+> **What is already in this branch (`cadet-ar-app`)** — everything below marked ✅ is committed and clones automatically.  
+> **What you must supply manually** — the two `.pth` model checkpoint files (too large for git). See [§ 4](#4-required-model-files).
+
 ```
 cadet_ar/
-├── app.py                    # Streamlit entry-point
-├── inference.py              # All model logic (do NOT modify)
-├── make_samples.py           # Pre-compute sample cache
-├── smoke_test.py             # Automated verification suite
-├── requirements.txt          # Pinned dependencies
-├── project_info.py           # Project identity constants
+├── app.py                    ✅ Streamlit entry-point
+├── inference.py              ✅ All model logic (do NOT modify)
+├── image_inference.py        ✅ Image inference stub (teammate fills in)
+├── make_samples.py           ✅ Pre-compute sample cache
+├── smoke_test.py             ✅ Automated verification suite
+├── requirements.txt          ✅ Pinned dependencies
+├── project_info.py           ✅ Project identity constants
 ├── assets/
-│   └── styles.css            # Custom CSS theme
+│   └── styles.css            ✅ Custom CSS theme
+├── components/
+│   ├── video_method.py       ✅ Video Method page content
+│   ├── video_results.py      ✅ Video Results page content
+│   ├── image_method.py       ✅ Image tab — coming-soon panel (edit to fill in)
+│   └── image_results.py      ✅ Image tab — coming-soon panel (edit to fill in)
 ├── pages/
-│   ├── analyse.py            # Upload + live / cached analysis
-│   ├── results.py            # Benchmark metrics and figures
-│   ├── method.py             # Architecture and method walkthrough
-│   └── about.py              # Team, guide, institution
+│   ├── analyse.py            ✅ Upload + live / cached analysis
+│   ├── results.py            ✅ Two-tab Results page (Video / Image)
+│   ├── method.py             ✅ Two-tab Method page (Video / Image)
+│   └── about.py              ✅ Team, guide, institution
 ├── models/
-│   ├── best_clean_model.pth  # Clean-trained checkpoint  ← you supply
-│   ├── best_fgsm_model.pth   # FGSM-trained checkpoint   ← you supply
-│   ├── deploy_config.json    # Thresholds and hyper-params ← you supply
-│   └── results/
+│   ├── best_clean_model.pth  ⚠️  NOT in git — supply manually after cloning
+│   ├── best_fgsm_model.pth   ⚠️  NOT in git — supply manually after cloning
+│   ├── deploy_config.json    ✅ Thresholds and hyper-params
+│   └── results/              ✅ All benchmark data committed
 │       ├── acceptance_criteria.json
 │       ├── fgsm_v9_metrics.csv
 │       ├── fgsm_v9_per_method.csv
@@ -71,9 +81,9 @@ cadet_ar/
 │       ├── fgsm_v9_multiseed.csv
 │       ├── fgsm_v9_paired_comparison.csv
 │       ├── fgsm_v9_final_summary.md
-│       └── figures/          # PNG figures from the notebook
+│       └── figures/          ✅ 19 training figures committed
 └── samples/
-    ├── manifest.json         # Ground-truth labels for sample clips
+    ├── manifest.json         ✅ Ground-truth labels for sample clips
     ├── 0000.mp4              # Real sample clip
     ├── 0013.mp4              # Real sample clip
     ├── 0000_fake.mp4         # Fake sample clip
@@ -90,7 +100,8 @@ cadet_ar/
 ## 3. Setup
 
 ```bash
-# 1. Clone / unzip the project
+# 1. Clone the cadet-ar-app branch (all result files are included)
+git clone -b cadet-ar-app https://github.com/DurgamPoojitha/CADET_Team8.git cadet_ar
 cd cadet_ar
 
 # 2. Create a virtual environment (Python 3.10 or later)
@@ -99,6 +110,10 @@ source venv/bin/activate          # Windows: venv\Scripts\activate
 
 # 3. Install pinned dependencies
 pip install -r requirements.txt
+
+# 4. Copy the two model checkpoints (NOT in git — too large for GitHub)
+#    cp /path/to/best_clean_model.pth  models/best_clean_model.pth
+#    cp /path/to/best_fgsm_model.pth   models/best_fgsm_model.pth
 ```
 
 > [!IMPORTANT]
@@ -108,24 +123,20 @@ pip install -r requirements.txt
 
 ## 4. Required model files
 
-Place the following files exactly at the paths shown — the app will not start without them:
+> [!IMPORTANT]
+> `models/results/` (all CSVs, JSONs and figures) and `models/deploy_config.json` are **already committed** in this branch — no manual action needed for them.  
+> Only the two large checkpoint files must be copied manually.
 
-```
-cadet_ar/models/best_clean_model.pth
-cadet_ar/models/best_fgsm_model.pth
-cadet_ar/models/deploy_config.json
+After cloning, copy the two checkpoint files into `models/`:
+
+```bash
+# Copy from wherever you have them (Kaggle output, shared drive, etc.)
+cp /path/to/best_clean_model.pth  cadet_ar/models/best_clean_model.pth
+cp /path/to/best_fgsm_model.pth   cadet_ar/models/best_fgsm_model.pth
 ```
 
-`deploy_config.json` must contain at minimum:
-
-```json
-{
-  "clean_T":         <float>,   // temperature for clean model
-  "clean_threshold": <float>,   // P(fake) decision threshold
-  "fgsm_T":          <float>,   // temperature for FGSM model
-  "fgsm_threshold":  <float>    // P(fake) decision threshold
-}
-```
+The app will show a clear error on startup if either `.pth` file is missing.  
+`deploy_config.json` is already in the repo — do not overwrite it unless you have a newer version.
 
 The checkpoints are loaded with `torch.load(..., weights_only=False)` via `model_state_dict` key (extra keys such as `meta` are ignored).
 
