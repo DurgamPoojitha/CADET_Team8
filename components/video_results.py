@@ -6,11 +6,21 @@ Call render() from the Video tab in pages/results.py.
 import streamlit as st
 import json
 import csv
+import re
+import html
 from pathlib import Path
 
 _ROOT = Path(__file__).parent.parent
 _RESULTS_DIR = _ROOT / "models" / "results"
 _FIGURES_DIR = _RESULTS_DIR / "figures"
+
+
+def clean_text(value) -> str:
+    """Strips any HTML tags and trims whitespace."""
+    if value is None:
+        return ""
+    text = re.sub(r"<[^>]+>", "", str(value))
+    return text.strip()
 
 
 @st.cache_data(ttl=3600)
@@ -33,29 +43,69 @@ def _load_csv(path: Path):
         with open(path, newline="") as f:
             reader = csv.DictReader(f)
             for row in reader:
-                rows.append(dict(row))
+                cleaned_row = {clean_text(k): clean_text(v) for k, v in row.items()}
+                rows.append(cleaned_row)
         return rows
     except Exception:
         return None
 
 
 def _na(val, fmt=None) -> str:
-    if val is None or val == "":
+    cleaned = clean_text(val)
+    if cleaned == "" or cleaned.lower() == "none":
         return "not available"
     if fmt:
         try:
-            return fmt.format(float(val))
+            return fmt.format(float(cleaned))
         except (ValueError, TypeError):
-            return str(val)
-    return str(val)
+            return cleaned
+    return cleaned
 
 
-def _met_chip(met) -> str:
-    if met is True or str(met).lower() == "true":
+def _format_eps(val) -> str:
+    cleaned = clean_text(val)
+    try:
+        fval = float(cleaned)
+        eps_str = f"{fval:.2f}".rstrip("0").rstrip(".")
+        if eps_str == "":
+            eps_str = "0"
+        return f"{eps_str}/255"
+    except (ValueError, TypeError):
+        return f"{cleaned}/255" if cleaned else "not available"
+
+
+def _format_pct_1dec(val) -> str:
+    cleaned = clean_text(val)
+    try:
+        return f"{float(cleaned):.1%}"
+    except (ValueError, TypeError):
+        return _na(cleaned)
+
+
+def _format_4dec(val) -> str:
+    cleaned = clean_text(val)
+    try:
+        return f"{float(cleaned):.4f}"
+    except (ValueError, TypeError):
+        return _na(cleaned)
+
+
+def _format_delta_4dec(val) -> str:
+    cleaned = clean_text(val)
+    try:
+        return f"{float(cleaned):+.4f}"
+    except (ValueError, TypeError):
+        return _na(cleaned)
+
+
+def _render_chip(status_text: str) -> str:
+    """Returns an HTML badge using the project CSS classes."""
+    norm = status_text.strip().upper()
+    if norm == "MET":
         return '<span class="chip-met">MET</span>'
-    elif met is False or str(met).lower() == "false":
+    elif norm == "NOT MET":
         return '<span class="chip-not-met">NOT MET</span>'
-    return '<span style="font-family:var(--mono);color:var(--ink-muted)">not available</span>'
+    return f'<span style="font-family:var(--mono);color:var(--ink-muted)">{html.escape(status_text)}</span>'
 
 
 def render():
@@ -146,20 +196,36 @@ def render():
                 ).properties(height=260)
                 st.altair_chart(chart_auc, use_container_width=True)
 
-            # Tabular breakdown
-            header  = "| ε (/255) | Clean-trained Acc | Clean-trained AUC | FGSM-trained Acc | FGSM-trained AUC | AUC Delta |"
-            sep     = "|---|---|---|---|---|---|"
-            rows_md = [header, sep]
+            # Tabular breakdown with right-aligned numeric columns
+            thead = (
+                "<table><thead><tr>"
+                "<th>Epsilon</th>"
+                "<th style='text-align:right'>Clean-trained Acc</th>"
+                "<th style='text-align:right'>Clean-trained AUC</th>"
+                "<th style='text-align:right'>FGSM-trained Acc</th>"
+                "<th style='text-align:right'>FGSM-trained AUC</th>"
+                "<th style='text-align:right'>AUC Delta</th>"
+                "</tr></thead><tbody>"
+            )
+            tbody = ""
             for _, r in df_paired.iterrows():
-                eps_str = f"{r['eps_255']:.2f}".rstrip('0').rstrip('.')
-                rows_md.append(
-                    f"| {eps_str} | {_na(r['acc_clean_trained'], '{:.1%}')} | "
-                    f"{_na(r['auc_clean_trained'], '{:.4f}')} | "
-                    f"{_na(r['acc_fgsm_trained'], '{:.1%}')} | "
-                    f"{_na(r['auc_fgsm_trained'], '{:.4f}')} | "
-                    f"{_na(r['auc_delta'], '{:+.4f}')} |"
+                eps_str = _format_eps(r["eps_255"])
+                c_acc = _format_pct_1dec(r["acc_clean_trained"])
+                c_auc = _format_4dec(r["auc_clean_trained"])
+                f_acc = _format_pct_1dec(r["acc_fgsm_trained"])
+                f_auc = _format_4dec(r["auc_fgsm_trained"])
+                d_auc = _format_delta_4dec(r.get("auc_delta"))
+                tbody += (
+                    f"<tr>"
+                    f"<td style='font-family:var(--mono)'>{html.escape(eps_str)}</td>"
+                    f"<td style='font-family:var(--mono);text-align:right'>{html.escape(c_acc)}</td>"
+                    f"<td style='font-family:var(--mono);text-align:right'>{html.escape(c_auc)}</td>"
+                    f"<td style='font-family:var(--mono);text-align:right'>{html.escape(f_acc)}</td>"
+                    f"<td style='font-family:var(--mono);text-align:right'>{html.escape(f_auc)}</td>"
+                    f"<td style='font-family:var(--mono);text-align:right'>{html.escape(d_auc)}</td>"
+                    f"</tr>"
                 )
-            st.markdown("\n".join(rows_md))
+            st.markdown(thead + tbody + "</tbody></table>", unsafe_allow_html=True)
         except Exception as e:
             st.warning(f"Could not render chart: {e}")
     else:
@@ -170,19 +236,40 @@ def render():
     # ── 3. Per-manipulation breakdown ─────────────────────────────────────────
     st.markdown("### Per-manipulation breakdown (clean, ε = 0)")
     if per_method:
-        filtered = [r for r in per_method if str(r.get("eps_255", "")).strip() in ("0.0", "0", "0.00")]
+        filtered = [r for r in per_method if clean_text(r.get("eps_255", "")) in ("0.0", "0", "0.00")]
         if filtered:
-            header  = "| Model | Method | Videos | Detection rate | 95 % CI | Mean P(fake) |"
-            sep     = "|---|---|---|---|---|---|"
-            rows_md = [header, sep]
+            thead = (
+                "<table><thead><tr>"
+                "<th>Model</th>"
+                "<th>Method</th>"
+                "<th style='text-align:right'>Videos</th>"
+                "<th style='text-align:right'>Detection Rate</th>"
+                "<th style='text-align:right'>95 % CI</th>"
+                "<th style='text-align:right'>Mean P(fake)</th>"
+                "</tr></thead><tbody>"
+            )
+            tbody = ""
             for r in filtered:
-                rows_md.append(
-                    f"| {r.get('model','n/a')} | {r.get('method','n/a')} | "
-                    f"{_na(r.get('n_videos'))} | {_na(r.get('rate'), '{:.1%}')} | "
-                    f"[{_na(r.get('ci_lo'), '{:.3f}')}, {_na(r.get('ci_hi'), '{:.3f}')}] | "
-                    f"{_na(r.get('mean_p_fake'), '{:.3f}')} |"
+                m_model  = clean_text(r.get("model", "not available"))
+                m_method = clean_text(r.get("method", "not available"))
+                n_vids   = clean_text(r.get("n_videos", "not available"))
+                rate_str = _format_pct_1dec(r.get("rate"))
+                ci_lo    = _format_4dec(r.get("ci_lo"))
+                ci_hi    = _format_4dec(r.get("ci_hi"))
+                mean_p   = _format_4dec(r.get("mean_p_fake"))
+                ci_str   = f"[{ci_lo}, {ci_hi}]"
+
+                tbody += (
+                    f"<tr>"
+                    f"<td>{html.escape(m_model)}</td>"
+                    f"<td>{html.escape(m_method)}</td>"
+                    f"<td style='font-family:var(--mono);text-align:right'>{html.escape(n_vids)}</td>"
+                    f"<td style='font-family:var(--mono);text-align:right'>{html.escape(rate_str)}</td>"
+                    f"<td style='font-family:var(--mono);text-align:right'>{html.escape(ci_str)}</td>"
+                    f"<td style='font-family:var(--mono);text-align:right'>{html.escape(mean_p)}</td>"
+                    f"</tr>"
                 )
-            st.markdown("\n".join(rows_md))
+            st.markdown(thead + tbody + "</tbody></table>", unsafe_allow_html=True)
         else:
             st.info("No clean-condition rows found in per-method CSV.")
     else:
@@ -204,27 +291,39 @@ def render():
             "C7": "C7 — Attack-aware: recall & specificity ≥ 35%",
             "C8": "C8 — Multi-seed gate passes in ≥ 2 seeds",
         }
-        header_html = (
+        thead = (
             "<table><thead><tr>"
             "<th>ID</th><th>Criterion</th><th style='text-align:center'>Status</th><th>Evidence</th>"
             "</tr></thead><tbody>"
         )
-        body_html = ""
+        tbody = ""
         for key, label in criteria_defs.items():
             crit_data = crit_source.get(key, {})
             if isinstance(crit_data, dict):
-                met      = crit_data.get("met", None)
-                evidence = crit_data.get("evidence", "not available")
+                met_val = crit_data.get("met")
+                raw_ev  = crit_data.get("evidence", "not available")
             else:
-                met      = None
-                evidence = str(crit_data) if crit_data else "not available"
-            body_html += (
-                f"<tr><td style='font-family:var(--mono);font-size:.8rem'>{key}</td>"
-                f"<td style='font-size:.82rem'>{label}</td>"
-                f"<td style='text-align:center'>{_met_chip(met)}</td>"
-                f"<td style='font-family:var(--mono);font-size:.72rem'>{evidence}</td></tr>"
+                met_val = None
+                raw_ev  = str(crit_data) if crit_data else "not available"
+
+            # Plain text status
+            if met_val is True or str(met_val).lower() == "true":
+                status_text = "MET"
+            elif met_val is False or str(met_val).lower() == "false":
+                status_text = "NOT MET"
+            else:
+                status_text = "not available"
+
+            chip_html = _render_chip(status_text)
+            evidence_clean = clean_text(raw_ev)
+
+            tbody += (
+                f"<tr><td style='font-family:var(--mono);font-size:.8rem'>{html.escape(key)}</td>"
+                f"<td style='font-size:.82rem'>{html.escape(label)}</td>"
+                f"<td style='text-align:center'>{chip_html}</td>"
+                f"<td style='font-family:var(--mono);font-size:.72rem'>{html.escape(evidence_clean)}</td></tr>"
             )
-        st.markdown(header_html + body_html + "</tbody></table>", unsafe_allow_html=True)
+        st.markdown(thead + tbody + "</tbody></table>", unsafe_allow_html=True)
     else:
         st.warning("Acceptance criteria not available.")
 
@@ -237,22 +336,43 @@ def render():
             "<table><thead><tr>"
             "<th>Seed</th><th>Mode</th><th>Model</th>"
             "<th style='text-align:center'>Gate Passed</th>"
-            "<th>ε (/255)</th><th>Accuracy</th><th>ROC-AUC</th><th>F1 Score</th>"
+            "<th style='text-align:right'>Epsilon</th>"
+            "<th style='text-align:right'>Accuracy</th>"
+            "<th style='text-align:right'>ROC-AUC</th>"
+            "<th style='text-align:right'>F1 Score</th>"
             "</tr></thead><tbody>"
         )
         tbody = ""
         for r in multiseed:
-            if str(r.get("eps_255", "")).strip() in ("0.0", "2.0", "4.0"):
+            eps_clean = clean_text(r.get("eps_255", ""))
+            if eps_clean in ("0.0", "0", "2.0", "2", "4.0", "4"):
+                gate_val = clean_text(r.get("gate_passed", ""))
+                if gate_val.lower() == "true":
+                    status_text = "MET"
+                elif gate_val.lower() == "false":
+                    status_text = "NOT MET"
+                else:
+                    status_text = gate_val if gate_val else "not available"
+
+                chip_html = _render_chip(status_text)
+                seed_str  = clean_text(r.get("seed", "not available"))
+                mode_str  = clean_text(r.get("mode", "not available"))
+                model_str = clean_text(r.get("model", "not available"))
+                eps_str   = _format_eps(eps_clean)
+                acc_str   = _format_pct_1dec(r.get("accuracy"))
+                auc_str   = _format_4dec(r.get("roc_auc"))
+                f1_str    = _format_4dec(r.get("f1"))
+
                 tbody += (
                     f"<tr>"
-                    f"<td style='font-family:var(--mono)'>{r.get('seed','n/a')}</td>"
-                    f"<td>{r.get('mode','n/a')}</td>"
-                    f"<td>{r.get('model','n/a')}</td>"
-                    f"<td style='text-align:center'>{_met_chip(r.get('gate_passed'))}</td>"
-                    f"<td style='font-family:var(--mono)'>{r.get('eps_255','n/a')}</td>"
-                    f"<td style='font-family:var(--mono)'>{_na(r.get('accuracy'), '{:.1%}')}</td>"
-                    f"<td style='font-family:var(--mono)'>{_na(r.get('roc_auc'), '{:.4f}')}</td>"
-                    f"<td style='font-family:var(--mono)'>{_na(r.get('f1'), '{:.4f}')}</td>"
+                    f"<td style='font-family:var(--mono)'>{html.escape(seed_str)}</td>"
+                    f"<td>{html.escape(mode_str)}</td>"
+                    f"<td>{html.escape(model_str)}</td>"
+                    f"<td style='text-align:center'>{chip_html}</td>"
+                    f"<td style='font-family:var(--mono);text-align:right'>{html.escape(eps_str)}</td>"
+                    f"<td style='font-family:var(--mono);text-align:right'>{html.escape(acc_str)}</td>"
+                    f"<td style='font-family:var(--mono);text-align:right'>{html.escape(auc_str)}</td>"
+                    f"<td style='font-family:var(--mono);text-align:right'>{html.escape(f1_str)}</td>"
                     f"</tr>"
                 )
         st.markdown(thead + tbody + "</tbody></table>", unsafe_allow_html=True)
