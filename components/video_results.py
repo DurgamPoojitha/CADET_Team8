@@ -233,18 +233,29 @@ def render():
     # ── 5. Multi-seed Results ────────────────────────────────────────────────
     st.markdown("### Multi-seed verification results")
     if multiseed:
-        header  = "| Seed | Mode | Model | Gate Passed | ε (/255) | Accuracy | ROC-AUC | F1 Score |"
-        sep     = "|---|---|---|---|---|---|---|---|"
-        rows_md = [header, sep]
+        thead = (
+            "<table><thead><tr>"
+            "<th>Seed</th><th>Mode</th><th>Model</th>"
+            "<th style='text-align:center'>Gate Passed</th>"
+            "<th>ε (/255)</th><th>Accuracy</th><th>ROC-AUC</th><th>F1 Score</th>"
+            "</tr></thead><tbody>"
+        )
+        tbody = ""
         for r in multiseed:
             if str(r.get("eps_255", "")).strip() in ("0.0", "2.0", "4.0"):
-                rows_md.append(
-                    f"| {r.get('seed','n/a')} | {r.get('mode','n/a')} | {r.get('model','n/a')} | "
-                    f"{_met_chip(r.get('gate_passed'))} | {r.get('eps_255','n/a')} | "
-                    f"{_na(r.get('accuracy'), '{:.1%}')} | {_na(r.get('roc_auc'), '{:.4f}')} | "
-                    f"{_na(r.get('f1'), '{:.4f}')} |"
+                tbody += (
+                    f"<tr>"
+                    f"<td style='font-family:var(--mono)'>{r.get('seed','n/a')}</td>"
+                    f"<td>{r.get('mode','n/a')}</td>"
+                    f"<td>{r.get('model','n/a')}</td>"
+                    f"<td style='text-align:center'>{_met_chip(r.get('gate_passed'))}</td>"
+                    f"<td style='font-family:var(--mono)'>{r.get('eps_255','n/a')}</td>"
+                    f"<td style='font-family:var(--mono)'>{_na(r.get('accuracy'), '{:.1%}')}</td>"
+                    f"<td style='font-family:var(--mono)'>{_na(r.get('roc_auc'), '{:.4f}')}</td>"
+                    f"<td style='font-family:var(--mono)'>{_na(r.get('f1'), '{:.4f}')}</td>"
+                    f"</tr>"
                 )
-        st.markdown("\n".join(rows_md))
+        st.markdown(thead + tbody + "</tbody></table>", unsafe_allow_html=True)
     else:
         st.warning("Multi-seed results not available.")
 
