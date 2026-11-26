@@ -1,0 +1,208 @@
+{
+  "frozen_before_test_access": true,
+  "frozen_at_unix": 1795519112.041257,
+  "split_fingerprint": "51a9b7b6867f",
+  "scope": "FGSM only. Success here says NOTHING about iterative-attack (PGD-type) robustness; PGD was deliberately excluded.",
+  "train_eps_255": 4.0,
+  "target_eps_255": 2.0,
+  "selected_epoch": 13,
+  "gate_never_passed": false,
+  "pilot_all_failed": false,
+  "thresholds": {
+    "clean_trained": 0.31563131551034246,
+    "fgsm_trained": 0.5128605295965103,
+    "rule": "eer on validation",
+    "attack_aware": {
+      "clean": 0.28556749312943264,
+      "fgsm": 0.5969497213614947
+    },
+    "attack_aware_rule": "EER of pooled validation scores {clean} U {FGSM at target eps}",
+    "per_eps": {
+      "Clean-trained": {
+        "0": {
+          "eer": 0.31563126900709204,
+          "f1": 0.14,
+          "selected": 0.31563126900709204,
+          "eer_value": 0.06896551724137932,
+          "n": 290
+        },
+        "0.25": {
+          "eer": 0.31563126900709204,
+          "f1": 0.14,
+          "selected": 0.31563126900709204,
+          "eer_value": 0.06896551724137932,
+          "n": 290
+        },
+        "0.5": {
+          "eer": 0.4460709723110719,
+          "f1": 0.17000000000000004,
+          "selected": 0.4460709723110719,
+          "eer_value": 0.803448275862069,
+          "n": 290
+        },
+        "1": {
+          "eer": 0.33790969570082025,
+          "f1": 0.07,
+          "selected": 0.33790969570082025,
+          "eer_value": 0.8551724137931034,
+          "n": 290
+        },
+        "1.5": {
+          "eer": 0.23843546893993842,
+          "f1": 0.8100000000000002,
+          "selected": 0.23843546893993842,
+          "eer_value": 0.8896551724137931,
+          "n": 290
+        },
+        "2": {
+          "eer": 0.21508624986595068,
+          "f1": 0.9900000000000002,
+          "selected": 0.21508624986595068,
+          "eer_value": 0.9172413793103449,
+          "n": 290
+        },
+        "4": {
+          "eer": 0.2449034886303981,
+          "f1": 0.9900000000000002,
+          "selected": 0.2449034886303981,
+          "eer_value": 0.9620689655172414,
+          "n": 290
+        },
+        "8": {
+          "eer": 0.181021789354768,
+          "f1": 0.9900000000000002,
+          "selected": 0.181021789354768,
+          "eer_value": 0.8482758620689655,
+          "n": 290
+        },
+        "12": {
+          "eer": 0.16170756093986977,
+          "f1": 0.14,
+          "selected": 0.16170756093986977,
+          "eer_value": 0.6413793103448275,
+          "n": 290
+        },
+        "16": {
+          "eer": 0.13339308782154377,
+          "f1": 0.11000000000000001,
+          "selected": 0.13339308782154377,
+          "eer_value": 0.5310344827586206,
+          "n": 290
+        }
+      },
+      "FGSM-trained": {
+        "0": {
+          "eer": 0.5128611456974655,
+          "f1": 0.6700000000000002,
+          "selected": 0.5128611456974655,
+          "eer_value": 0.06896551724137932,
+          "n": 290
+        },
+        "0.25": {
+          "eer": 0.5128611456974655,
+          "f1": 0.6700000000000002,
+          "selected": 0.5128611456974655,
+          "eer_value": 0.06896551724137932,
+          "n": 290
+        },
+        "0.5": {
+          "eer": 0.8137354972659477,
+          "f1": 0.7700000000000002,
+          "selected": 0.8137354972659477,
+          "eer_value": 0.13793103448275865,
+          "n": 290
+        },
+        "1": {
+          "eer": 0.765134976477877,
+          "f1": 0.5600000000000002,
+          "selected": 0.765134976477877,
+          "eer_value": 0.1482758620689655,
+          "n": 290
+        },
+        "1.5": {
+          "eer": 0.7129222554881159,
+          "f1": 0.49000000000000005,
+          "selected": 0.7129222554881159,
+          "eer_value": 0.17931034482758623,
+          "n": 290
+        },
+        "2": {
+          "eer": 0.7309496125054207,
+          "f1": 0.29000000000000004,
+          "selected": 0.7309496125054207,
+          "eer_value": 0.1724137931034483,
+          "n": 290
+        },
+        "4": {
+          "eer": 0.93488483632013,
+          "f1": 0.6000000000000002,
+          "selected": 0.93488483632013,
+          "eer_value": 0.17931034482758623,
+          "n": 290
+        },
+        "8": {
+          "eer": 0.9527883948971054,
+          "f1": 0.9300000000000002,
+          "selected": 0.9527883948971054,
+          "eer_value": 0.22758620689655173,
+          "n": 290
+        },
+        "12": {
+          "eer": 0.926841080643152,
+          "f1": 0.8100000000000002,
+          "selected": 0.926841080643152,
+          "eer_value": 0.3931034482758621,
+          "n": 290
+        },
+        "16": {
+          "eer": 0.9452018240031894,
+          "f1": 0.8800000000000002,
+          "selected": 0.9452018240031894,
+          "eer_value": 0.43448275862068964,
+          "n": 290
+        }
+      }
+    },
+    "per_eps_rule": "EER and macro-F1-optimal thresholds fitted on the FULL validation set at each epsilon; reporting only; frozen before test access"
+  },
+  "recipe": {
+    "random_eps": true,
+    "alp_weight": 0.2,
+    "train_attack_amp": true,
+    "clip_mode": "adaptive",
+    "epochs_run": 14,
+    "calib_eps_grid": [
+      0,
+      0.25,
+      0.5,
+      1,
+      1.5,
+      2,
+      4,
+      8,
+      12,
+      16
+    ]
+  },
+  "criteria": {
+    "C1_clean_auc_retained": "test clean ROC-AUC of FGSM-trained >= 0.97 x clean-trained",
+    "C2_val_fgsm_auc_target": "validation FGSM AUC at target eps >= 0.75",
+    "C3_val_fgsm_auc_gain": "validation FGSM AUC at target eps exceeds the clean-trained model's by >= 0.1",
+    "C4_no_label_leak": "test FGSM accuracy at any eps <= clean accuracy + 0.02",
+    "C5_paired_gain": "paired-bootstrap 95% CI of [AUC(FGSM-trained) - AUC(clean-trained)] has lower bound > 0 at the target AND the training epsilon (test)",
+    "C6_numerics": "no NaN/Inf, zero-gradient samples = 0 during evaluation, and every non-finite TRAINING step rescued by the fp32 retry or skipped (counted)",
+    "C7_class_balance_under_attack": "test, FGSM at target eps, attack-aware threshold: BOTH fake recall and real specificity >= 0.35 (v8: fake recall 8% at 1/255)",
+    "C8_multi_seed": "the FGSM validation gate passes in >= 2 training seeds (evaluated after Cell 18)"
+  },
+  "validation_evidence_already_known": {
+    "C2_value": 0.9046874999999999,
+    "C2_met": true,
+    "C3_value": 0.8884374999999999,
+    "C3_met": true,
+    "val_clean_auc_fgsm_model": 0.9876813317479192,
+    "val_clean_logit_std": 3.9284422397613525,
+    "val_fgsm_target_sens": 0.825,
+    "val_fgsm_target_spec": 0.6625,
+    "val_clean_auc_clean_model": 0.9956718192627824
+  }
+}

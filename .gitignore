@@ -9,8 +9,12 @@ venv/
 env/
 kaggle_env/
 
-# Model checkpoints (too large for git)
+# Model checkpoints (too large for git — supply manually after cloning)
 models/*.pth
+
+# Keep results data and config tracked
+!models/results/
+!models/deploy_config.json
 
 # Generated sample cache (images, re-run make_samples.py to regenerate)
 samples/cache/
