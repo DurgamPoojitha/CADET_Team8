@@ -417,24 +417,26 @@ hr {
 /* ---- Pipeline diagram ---- */
 .pipeline-wrap {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0;
-  overflow-x: auto;
+  justify-content: flex-start;
+  gap: 0.35rem 0;
   padding: .8rem 0;
 }
 .pipeline-block {
   font-family: var(--mono);
-  font-size: .72rem;
-  letter-spacing: .04em;
+  font-size: .68rem;
+  letter-spacing: .03em;
   background: var(--bg-alt);
   border: 1px solid var(--rule);
   border-radius: 2px;
-  padding: .5rem .7rem;
+  padding: .45rem .55rem;
   text-align: center;
-  min-width: 80px;
-  line-height: 1.4;
+  min-width: 68px;
+  line-height: 1.35;
   color: var(--ink);
-  white-space: nowrap;
+  white-space: normal;
+  box-sizing: border-box;
 }
 .pipeline-block.accent {
   border-color: var(--accent);
@@ -442,9 +444,9 @@ hr {
 }
 .pipeline-arrow {
   font-family: var(--mono);
-  font-size: .9rem;
+  font-size: .85rem;
   color: var(--rule);
-  padding: 0 .2rem;
+  padding: 0 .25rem;
   flex-shrink: 0;
 }
 
